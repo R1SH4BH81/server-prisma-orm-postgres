@@ -15,7 +15,8 @@ const getAll = async (req, res) => {
 const createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const authorId = request.user.userId;
+    const authorId = req.user.userId;
+
     const newPost = await prisma.post.create({
       data: {
         title,
@@ -33,7 +34,7 @@ const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
-    const authorId = request.user.userId;
+    const authorId = req.user.userId;
 
     const post = await prisma.post.findUnique({ where: { id: Number(id) } });
 
@@ -58,7 +59,7 @@ const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const authorId = request.user.userId;
+    const authorId = req.user.userId;
 
     const post = await prisma.post.findUnique({ where: { id: Number(id) } });
 
