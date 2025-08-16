@@ -37,10 +37,7 @@ const updatePost = async (req, res) => {
     const authorId = req.user.userId;
 
     const post = await prisma.post.findUnique({ where: { id: Number(id) } });
-
-    if (!post) {
-      return res.status(404).json({ message: "post not found" });
-    }
+    if (!post) return res.status(404).json({ error: "Post not found" });
     if (post.authorId !== authorId)
       return res.status(403).json({ error: "Forbidden" });
 
@@ -48,10 +45,10 @@ const updatePost = async (req, res) => {
       where: { id: Number(id) },
       data: { title, content },
     });
-
-    res, json(updated);
-  } catch (e) {
-    return res.status(500).json({ message: "Server error" });
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 };
 
